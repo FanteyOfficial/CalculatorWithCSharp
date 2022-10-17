@@ -3,6 +3,7 @@ namespace Calculator
     public partial class Calculator : Form
     {
         const double unit = 10;
+        const double dec = 0.1;
         
         double num1 = 0;
         double num2 = 0;
@@ -11,6 +12,7 @@ namespace Calculator
         bool operClicked = false;
         bool isImp = false;
         bool calcDone = false;
+        bool pointClicked = false;
 
         public Calculator()
         {
@@ -25,12 +27,14 @@ namespace Calculator
             isImp = false;
             operClicked = false;
             calcDone = false;
+            pointClicked = false;
         }
 
         private void ce(object sender, EventArgs e)
         {
             if (!operClicked) num1 = 0;
             else num2 = 0;
+            pointClicked = false;
 
             dispNum();
         }
@@ -86,17 +90,35 @@ namespace Calculator
 
         private void addNumber(object sender, EventArgs e)
         {
-            if (!operClicked)
+            if (!pointClicked)
             {
-                num1 *= unit;
-                num1 += Convert.ToDouble(((Button)sender).Text);
-                dispNum();
+                if (!operClicked)
+                {
+                    num1 *= unit;
+                    num1 += Convert.ToDouble(((Button)sender).Text);
+                    dispNum();
+                }
+                else
+                {
+                    num2 *= unit;
+                    num2 += Convert.ToDouble(((Button)sender).Text);
+                    dispNum();
+                }
             }
             else
             {
-                num2 *= unit;
-                num2 += Convert.ToDouble(((Button)sender).Text);
-                dispNum();
+                if (!operClicked)
+                {
+                    num1 *= dec;
+                    num1 += Convert.ToDouble( "0." + ((Button)sender).Text);
+                    dispNum();
+                }
+                else
+                {
+                    //num2 *= dec;
+                    num2 += Convert.ToDouble("0." + ((Button)sender).Text) * dec;
+                    dispNum();
+                }
             }
         }
 
@@ -105,6 +127,7 @@ namespace Calculator
             if (!operClicked)
             {
                 operClicked = true;
+                pointClicked = false;
                 oper = Convert.ToInt32(((Button)sender).Tag);
                 dispNum();
             }
@@ -112,7 +135,6 @@ namespace Calculator
 
         private void calculate(object sender, EventArgs e)
         {
-
             if (num2 == 0 && oper == 3)
             {
                 isImp = true;
@@ -141,6 +163,11 @@ namespace Calculator
                 }
             }
             dispRes();
+        }
+
+        private void pointClick(object sender, EventArgs e)
+        {
+            if (!pointClicked) pointClicked = true;
         }
     }
 }

@@ -204,6 +204,7 @@
             this.Point.TabIndex = 11;
             this.Point.Text = ".";
             this.Point.UseVisualStyleBackColor = false;
+            this.Point.Click += new System.EventHandler(this.pointClick);
             // 
             // Sum
             // 
